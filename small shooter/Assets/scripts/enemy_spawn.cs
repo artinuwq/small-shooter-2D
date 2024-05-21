@@ -8,7 +8,7 @@ public class enemy_spawn : MonoBehaviour
     public Vector3 Pos1 = new Vector3(15, 3.28f, 0);
     public Vector3 Pos2 = new Vector3(15, 0.55f, 0);
     public Vector3 Pos3 = new Vector3(15,-1.66f, 0);
-
+    public GameObject LosePhone;
 
     public Vector3 Pos = new Vector3(15, 3.28f, 0);
     void Start()
@@ -28,6 +28,6 @@ public class enemy_spawn : MonoBehaviour
         if (HUIBLYAT == 2) { Pos = Pos3; }
 
         Instantiate(prefab1, Pos, Quaternion.identity);
-        if (true) { Invoke("SpawnEnemy", Random.Range(0.3f, 4)); }
+        if (LosePhone.activeSelf == false) { Invoke("SpawnEnemy", Random.Range(0.3f, 4)); }
     }
 }
