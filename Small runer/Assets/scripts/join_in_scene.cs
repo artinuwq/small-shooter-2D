@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static Library;
 public class join_in_scene : MonoBehaviour
 {
 
@@ -11,6 +12,8 @@ public class join_in_scene : MonoBehaviour
     }
     public void Exit()
     {
+        mainmenu.instance.activeSave.MaxTime = StaticHolder.MaxTime;
+        mainmenu.instance.save();
         Application.Quit();
     }
 

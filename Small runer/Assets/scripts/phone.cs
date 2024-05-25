@@ -13,7 +13,7 @@ public class phone : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += new Vector3(-0.005f, 0, 0);
-            if (transform.position.x < -20) { transform.position = new Vector3(20, 1.27f, 2); }
+        transform.position += new Vector3(-10 * Time.deltaTime, 0, 0);
+            if (transform.position.x < -30.54) { transform.position = new Vector3(20, 1.27f, 2); }
     }
 }

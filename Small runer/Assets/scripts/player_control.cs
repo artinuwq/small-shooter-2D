@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using static Library;
 
 
 public class player_control : MonoBehaviour
@@ -7,6 +8,8 @@ public class player_control : MonoBehaviour
     public GameObject obj;
     public GameObject Lose;
     public GameObject TextTimerOBJ;
+    public GameObject PauseMenu;
+    public bool PauseMenuActivited = true;
     public TMP_Text TextTimer;
     public TMP_Text LostTextTimer;
     public int Timer;
@@ -19,6 +22,7 @@ public class player_control : MonoBehaviour
     public Animator animation_controller;
     void Start()
     {
+        StaticHolder.CurrentlyDiffucult = 1;
         Invoke("TimerSC", 1);
     }
 
@@ -41,8 +45,10 @@ public class player_control : MonoBehaviour
             GameStop = !GameStop;
         }
         if (GameStop == true) {
-            Time.timeScale = 0;
-        } else if (GameStop == false) { Time.timeScale = 1; }
+            PauseMenuF();
+        } else if (GameStop == false) {
+            UNPauseMenuF();
+        }
 
         if (Input.GetAxisRaw("Horizontal") > 0 && XposOffset < 3)
         {
@@ -67,16 +73,35 @@ public class player_control : MonoBehaviour
             Invoke("TimerSC", 1);
             TextTimer.text = Timer.ToString();
             LostTextTimer.text = "Время: " + Timer.ToString();
+            StaticHolder.CurrentlyDiffucult = Timer; 
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Enemy") {
-            Lose.SetActive(true);
-            obj.transform.position = new Vector3(0, -10, 0);
-
-           
+            LoseMenu();
         }
+    }
+
+
+    public void LoseMenu() {
+        Lose.SetActive(true);
+        PauseMenu.SetActive(false);
+        obj.transform.position = new Vector3(0, -10, 0);
+        if (Timer > StaticHolder.MaxTime) { StaticHolder.MaxTime = Timer; }
+        PauseMenuActivited = false;
+    }
+    public void PauseMenuF()
+    {
+        Time.timeScale = 0;
+        PauseMenu.SetActive(true && PauseMenuActivited);
+
+    }
+    public void UNPauseMenuF()
+    {
+        Time.timeScale = 1;
+        PauseMenu.SetActive(false && PauseMenuActivited);
+        GameStop = false;
     }
 }
