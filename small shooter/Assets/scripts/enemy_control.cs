@@ -17,4 +17,12 @@ public class enemy_control : MonoBehaviour
         transform.position += new Vector3(Random.Range(-0.02f,-0.001f), 0, 0) ;
         if (transform.position.x < -15) { Destroy(gameObject); }
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            Destroy(gameObject);
+          
+        }
+    }
 }

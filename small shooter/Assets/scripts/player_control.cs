@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 using TMPro;
+
 
 public class player_control : MonoBehaviour
 {
@@ -15,6 +12,7 @@ public class player_control : MonoBehaviour
     public int Timer;
     public int level = 2;
     public bool GameStop;
+    public float XposOffset = 0;
     // 3 - Верх
     // 2 - Серидина
     // 1 - Низ
@@ -28,14 +26,15 @@ public class player_control : MonoBehaviour
     void Update()
     {
         TextTimerOBJ.SetActive(!Lose.activeSelf);
+
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
             if (level != 3) { level++; }
         }
-
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             if (level != 1) { level--; }
         }
+
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -43,11 +42,23 @@ public class player_control : MonoBehaviour
         }
         if (GameStop == true) {
             Time.timeScale = 0;
-        } else if (GameStop == false)  { Time.timeScale = 1; }
+        } else if (GameStop == false) { Time.timeScale = 1; }
 
-        if (level == 1) { obj.transform.position = new Vector3(-5, -1.69f, 0); } else
-       if (level == 2) { obj.transform.position = new Vector3(-5, 0.55f, 0); } else
-      if (level == 3) { obj.transform.position = new Vector3(-5, 3.32f, 0); }
+        if (Input.GetAxisRaw("Horizontal") > 0 && XposOffset < 3)
+        {
+            XposOffset += Input.GetAxisRaw("Horizontal") * 3 * Time.deltaTime;
+        }
+        else if (Input.GetAxisRaw("Horizontal") < 0 && XposOffset > -3)
+        {
+            XposOffset += Input.GetAxisRaw("Horizontal") * 3 * Time.deltaTime;
+
+        } 
+
+
+
+            if (level == 1) { obj.transform.position = new Vector3(-4 + XposOffset, -1.69f, 0); } else
+       if (level == 2) { obj.transform.position = new Vector3(-4 + XposOffset, 0.55f, 0); } else
+      if (level == 3) { obj.transform.position = new Vector3(-4 + XposOffset, 3.32f, 0); }
     }
     public void TimerSC() {
         if (Lose.activeSelf == false)
@@ -65,7 +76,7 @@ public class player_control : MonoBehaviour
             Lose.SetActive(true);
             obj.transform.position = new Vector3(0, -10, 0);
 
-
+           
         }
     }
 }
